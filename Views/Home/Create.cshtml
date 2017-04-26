@@ -1,0 +1,55 @@
+﻿@model WCF.BussinessObject.EntityObject.ChiTieuObject
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { encType = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    {
+        var ob = new Web3ThangNgoc.Models.UserModel().GetSession();
+        if (ob != null)
+        {
+            @Html.HiddenFor(d => d.Username, new { @Value = ob.Username });
+            <h2>Xin chào @(new WCF.BussinessController.BCL.UserBCL().Get(ob.Username).Name)</h2>
+        }
+        else
+        {
+            Response.Redirect(Url.Action("Login", "Login"));
+        }
+    }
+    <div class="form-horizontal">
+        <h4>Tiêu gì</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="Image" value="" />
+                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GiaTien, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.GiaTien, new { htmlAttributes = new { @class = "form-control", type = "number" } })
+                @Html.ValidationMessageFor(model => model.GiaTien, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <input type="submit" name="name" value="Submit" class="btn btn-default" />
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

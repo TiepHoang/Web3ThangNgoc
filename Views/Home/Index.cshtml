@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WCF.BussinessObject.EntityObject.ChiTieuObject>
+
+@using WCF.BussinessController.BCL
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@helper ImageUserAndName(string Username)
+{
+WCF.BussinessObject.EntityObject.UserObject ob = new UserBCL().Get(Username);
+    <img src="@ob.Avatar" alt="@ob.Username" style="max-height: 40px; max-width: 100px"/>  <span>@ob.Name</span>
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GiaTien)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ThoiGian)
+        </th>
+        <th>
+            Người đăng
+        </th>
+        <th>Thao tác</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@item.Image" alt="Alternate Text" style="max-height: 60px; max-width: 150px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaTien)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ThoiGian)
+            </td>
+            <td>
+                @ImageUserAndName(item.Username)
+            </td>
+            <td>
+                @{
+                    var ob = new Web3ThangNgoc.Models.UserModel().GetSession();
+                    if (ob != null && ob.Username.Equals(item.Username))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID });
+                        <span> | </span>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID });
+                    }
+                }
+            </td>
+        </tr>
+                    }
+
+</table>

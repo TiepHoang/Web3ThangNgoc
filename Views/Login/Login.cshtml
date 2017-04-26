@@ -1,0 +1,49 @@
+﻿@{
+    Layout = null;
+    var ob = new Web3ThangNgoc.Models.UserModel().GetUserObjectInCookie();
+}
+
+@model Web3ThangNgoc.Models.UserSession
+
+<!DOCTYPE html>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+
+</head>
+<body>
+    <div>
+        <!--
+        you can substitue the span of reauth email for a input with the email and
+        include the remember me checkbox
+        -->
+        <div class="container">
+            <div class="card card-container">
+                <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                @Html.ValidationSummary("", new { @class = "alert-danger" })
+                @using (Html.BeginForm())
+                {
+                    <span id="reauth-email" class="reauth-email"></span>
+                    @Html.TextBoxFor(d => d.Username, new { @class = "form-control", placeholder = "Tên đăng nhập", @Value = ob != null ? ob.Username : "", required = true })
+                    @Html.PasswordFor(d => d.Password, new { @class = "form-control", placeholder = "Mật khẩu", type = "password", required = true, value = ob != null ? ob.Password : "" })
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(d => d.Remenber) Remember me
+                        </label>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+                }
+                <a href="#" class="forgot-password">
+                    Forgot the password?
+                </a>
+            </div><!-- /card-container -->
+        </div><!-- /container -->
+    </div>
+    <link href="~/Areas/Admin/Content/userLogin.css" rel="stylesheet" />
+    <script src="~/Areas/Admin/Content/userLogin.js"></script>
+</body>
+</html>
